@@ -1,0 +1,458 @@
+DROP TABLE
+CREATE TABLE
+INSERT 0 2000000
+INSERT 0 2000000
+ name 
+------
+ paul
+ hans
+(2 строки)
+
+ name |  count  
+------+---------
+ hans | 2000000
+ paul | 2000000
+(2 строки)
+
+   id   | name 
+--------+------
+ 432332 | hans
+(1 строка)
+
+                               QUERY PLAN                                
+-------------------------------------------------------------------------
+ Gather  (cost=1000.00..43455.43 rows=1 width=9)
+   Workers Planned: 2
+   ->  Parallel Seq Scan on t_test  (cost=0.00..42455.33 rows=1 width=9)
+         Filter: (id = 432332)
+(4 строки)
+
+SET
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Seq Scan on t_test  (cost=0.00..71622.00 rows=1 width=9)
+   Filter: (id = 432332)
+(2 строки)
+
+                        QUERY PLAN                        
+----------------------------------------------------------
+ Seq Scan on t_test  (cost=0.00..71622.00 rows=1 width=9)
+   Filter: (id = 432332)
+(2 строки)
+
+      ?column?      
+--------------------
+ 21622.000000000000
+(1 строка)
+
+ seq_page_cost 
+---------------
+ 1
+(1 строка)
+
+ cpu_tuple_cost 
+----------------
+ 0.01
+(1 строка)
+
+ cpu_operator_cost 
+-------------------
+ 0.0025
+(1 строка)
+
+  ?column?  
+------------
+ 71622.0000
+(1 строка)
+
+  id   | name 
+-------+------
+ 43242 | hans
+(1 строка)
+
+                                      Список отношений
+ Схема  |       Имя       |  Тип   | Владелец |  Таблица   |  Хранение  | Размер | Описание 
+--------+-----------------+--------+----------+------------+------------+--------+----------
+ public | idx_id          | индекс | jigsaw   | t_test     | постоянное | 86 MB  | 
+ public | t_currency_pkey | индекс | jigsaw   | t_currency | постоянное | 16 kB  | 
+ public | t_invoice_pkey  | индекс | jigsaw   | t_invoice  | постоянное | 16 kB  | 
+(3 строки)
+
+                                          QUERY PLAN                                           
+-----------------------------------------------------------------------------------------------
+ Limit  (cost=0.43..0.74 rows=10 width=9)
+   ->  Index Scan Backward using idx_id on t_test  (cost=0.43..125505.43 rows=4000000 width=9)
+(2 строки)
+
+                                                     QUERY PLAN                                                      
+---------------------------------------------------------------------------------------------------------------------
+ Result  (cost=0.92..0.93 rows=1 width=8)
+   InitPlan 1 (returns $0)
+     ->  Limit  (cost=0.43..0.46 rows=1 width=4)
+           ->  Index Only Scan using idx_id on t_test  (cost=0.43..113880.43 rows=4000000 width=4)
+                 Index Cond: (id IS NOT NULL)
+   InitPlan 2 (returns $1)
+     ->  Limit  (cost=0.43..0.46 rows=1 width=4)
+           ->  Index Only Scan Backward using idx_id on t_test t_test_1  (cost=0.43..113880.43 rows=4000000 width=4)
+                 Index Cond: (id IS NOT NULL)
+(9 строк)
+
+                                QUERY PLAN                                 
+---------------------------------------------------------------------------
+ Bitmap Heap Scan on t_test  (cost=8.88..16.85 rows=2 width=9)
+   Recheck Cond: ((id = 30) OR (id = 50))
+   ->  BitmapOr  (cost=8.88..8.88 rows=2 width=0)
+         ->  Bitmap Index Scan on idx_id  (cost=0.00..4.44 rows=1 width=0)
+               Index Cond: (id = 30)
+         ->  Bitmap Index Scan on idx_id  (cost=0.00..4.44 rows=1 width=0)
+               Index Cond: (id = 50)
+(7 строк)
+
+                                     Таблица "public.t_test"
+ Столбец |   Тип   | Правило сортировки | Допустимость NULL |            По умолчанию            
+---------+---------+--------------------+-------------------+------------------------------------
+ id      | integer |                    | not null          | nextval('t_test_id_seq'::regclass)
+ name    | text    |                    |                   | 
+Индексы:
+    "idx_id" btree (id)
+
+CREATE INDEX
+                              QUERY PLAN                               
+-----------------------------------------------------------------------
+ Index Scan using idx_name on t_test  (cost=0.43..4.45 rows=1 width=9)
+   Index Cond: (name = 'hans2'::text)
+(2 строки)
+
+                           QUERY PLAN                           
+----------------------------------------------------------------
+ Seq Scan on t_test  (cost=0.00..81622.00 rows=3000009 width=9)
+   Filter: ((name = 'hans'::text) OR (name = 'paul'::text))
+(2 строки)
+
+                                 QUERY PLAN                                  
+-----------------------------------------------------------------------------
+ Bitmap Heap Scan on t_test  (cost=8.88..12.89 rows=1 width=9)
+   Recheck Cond: ((name = 'hans2'::text) OR (name = 'paul2'::text))
+   ->  BitmapOr  (cost=8.88..8.88 rows=1 width=0)
+         ->  Bitmap Index Scan on idx_name  (cost=0.00..4.44 rows=1 width=0)
+               Index Cond: (name = 'hans2'::text)
+         ->  Bitmap Index Scan on idx_name  (cost=0.00..4.44 rows=1 width=0)
+               Index Cond: (name = 'paul2'::text)
+(7 строк)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_id on t_test  (cost=0.43..360.86 rows=10539 width=9) (actual time=0.016..1.040 rows=9999 loops=1)
+   Index Cond: (id < 10000)
+   Buffers: shared hit=85
+ Planning:
+   Buffers: shared hit=4
+ Planning Time: 0.717 ms
+ Execution Time: 1.310 ms
+(7 строк)
+
+SELECT 4000000
+CREATE INDEX
+VACUUM
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on t_random  (cost=182.41..17473.15 rows=9546 width=9) (actual time=2.056..7.454 rows=9999 loops=1)
+   Recheck Cond: (id < 10000)
+   Heap Blocks: exact=8075
+   Buffers: shared hit=8105
+   ->  Bitmap Index Scan on idx_random  (cost=0.00..180.03 rows=9546 width=0) (actual time=1.301..1.301 rows=9999 loops=1)
+         Index Cond: (id < 10000)
+         Buffers: shared hit=30
+ Planning:
+   Buffers: shared hit=15
+ Planning Time: 0.146 ms
+ Execution Time: 7.834 ms
+(11 строк)
+
+ tablename | attname | correlation 
+-----------+---------+-------------
+ t_random  | id      | 0.001253481
+ t_random  | name    |  0.50057197
+ t_test    | id      |           1
+ t_test    | name    |           1
+(4 строки)
+
+CLUSTER
+                             QUERY PLAN                              
+---------------------------------------------------------------------
+ Index Scan using idx_id on t_test  (cost=0.43..8.45 rows=1 width=9)
+   Index Cond: (id = 34234)
+(2 строки)
+
+           age           
+-------------------------
+ 12 years 1 day 14:00:00
+(1 строка)
+
+                            QUERY PLAN                            
+------------------------------------------------------------------
+ Seq Scan on t_random  (cost=0.00..91622.00 rows=20000 width=9)
+   Filter: (cos((id)::double precision) = '10'::double precision)
+(2 строки)
+
+                                      Список отношений
+ Схема  |       Имя       |  Тип   | Владелец |  Таблица   |  Хранение  | Размер | Описание 
+--------+-----------------+--------+----------+------------+------------+--------+----------
+ public | idx_id          | индекс | jigsaw   | t_test     | постоянное | 86 MB  | 
+ public | idx_name        | индекс | jigsaw   | t_test     | постоянное | 26 MB  | 
+ public | idx_random      | индекс | jigsaw   | t_random   | постоянное | 86 MB  | 
+ public | t_currency_pkey | индекс | jigsaw   | t_currency | постоянное | 16 kB  | 
+ public | t_invoice_pkey  | индекс | jigsaw   | t_invoice  | постоянное | 16 kB  | 
+(5 строк)
+
+                                      Список отношений
+ Схема  |      Имя      |        Тип         | Владелец |  Хранение  |   Размер   | Описание 
+--------+---------------+--------------------+----------+------------+------------+----------
+ public | t_account     | таблица            | jigsaw   | постоянное | 16 kB      | 
+ public | t_currency    | таблица            | jigsaw   | постоянное | 16 kB      | 
+ public | t_deadlock    | таблица            | jigsaw   | постоянное | 8192 bytes | 
+ public | t_flight      | таблица            | jigsaw   | постоянное | 8192 bytes | 
+ public | t_invoice     | таблица            | jigsaw   | постоянное | 8192 bytes | 
+ public | t_random      | таблица            | jigsaw   | постоянное | 169 MB     | 
+ public | t_test        | таблица            | jigsaw   | постоянное | 169 MB     | 
+ public | t_test_id_seq | последовательность | jigsaw   | постоянное | 8192 bytes | 
+ public | t_watermark   | таблица            | jigsaw   | постоянное | 8192 bytes | 
+(9 строк)
+
+DROP INDEX
+                                   Список отношений
+ Схема  |   Имя    |  Тип   | Владелец | Таблица |  Хранение  |   Размер   | Описание 
+--------+----------+--------+----------+---------+------------+------------+----------
+ public | idx_name | индекс | jigsaw   | t_test  | постоянное | 8192 bytes | 
+(1 строка)
+
+                                   Список отношений
+ Схема  |   Имя    |  Тип   | Владелец | Таблица |  Хранение  |   Размер   | Описание 
+--------+----------+--------+----------+---------+------------+------------+----------
+ public | idx_name | индекс | jigsaw   | t_test  | постоянное | 8192 bytes | 
+(1 строка)
+
+CREATE INDEX
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+CREATE FUNCTION
+ normalize_si 
+--------------
+ 7808091118
+(1 строка)
+
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+
+CREATE OPERATOR
+CREATE OPERATOR
+CREATE OPERATOR
+CREATE FUNCTION
+SET
+                                QUERY PLAN                                
+--------------------------------------------------------------------------
+ Seq Scan on t_sva  (cost=10000000000.00..10000000027.00 rows=7 width=32)
+   Filter: (sva = '0000112273'::text)
+(2 строки)
+
+    sva     
+------------
+ 1118090878
+ 2345010477
+(2 строки)
+
+ oid  | amname |      amhandler       | amtype 
+------+--------+----------------------+--------
+    2 | heap   | heap_tableam_handler | t
+  403 | btree  | bthandler            | i
+  405 | hash   | hashhandler          | i
+  783 | gist   | gisthandler          | i
+ 2742 | gin    | ginhandler           | i
+ 4000 | spgist | spghandler           | i
+ 3580 | brin   | brinhandler          | i
+(7 строк)
+
+CREATE INDEX
+                                 Список отношений
+ Схема  |   Имя    |  Тип   | Владелец | Таблица |  Хранение  | Размер | Описание 
+--------+----------+--------+----------+---------+------------+--------+----------
+ public | idx_brin | индекс | jigsaw   | t_test  | постоянное | 48 kB  | 
+(1 строка)
+
+CREATE EXTENSION
+CREATE TABLE
+CREATE INDEX
+SET
+                               QUERY PLAN                                
+-------------------------------------------------------------------------
+ Bitmap Heap Scan on t_bloom  (cost=18.50..22.52 rows=1 width=28)
+   Recheck Cond: ((x3 = 7) AND (x5 = 9))
+   ->  Bitmap Index Scan on idx_bloom  (cost=0.00..18.50 rows=1 width=0)
+         Index Cond: ((x3 = 7) AND (x5 = 9))
+(4 строки)
+
+CREATE EXTENSION
+CREATE TABLE
+COPY 2354
+              name              
+--------------------------------
+ Eisenstadt
+ Rust
+ Breitenbrunn am Neusiedler See
+ Donnerskirchen
+(4 строки)
+
+ ?column?  
+-----------
+ 0.8333333
+(1 строка)
+
+ ?column?  
+-----------
+ 0.8333333
+(1 строка)
+
+              show_trgm              
+-------------------------------------
+ {"  a"," ab",abc,bcd,cde,def,"ef "}
+(1 строка)
+
+      name      
+----------------
+ Gramatneusiedl
+ Gramatneusiedl
+ Klein-Neusiedl
+(3 строки)
+
+CREATE INDEX
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Limit  (cost=0.15..0.58 rows=5 width=18)
+   ->  Index Scan using idx_trgm on t_location  (cost=0.15..406.31 rows=4708 width=18)
+         Order By: (name <-> 'Kramertneusiedel'::text)
+(3 строки)
+
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Index Scan using idx_trgm on t_location  (cost=0.15..8.17 rows=1 width=14)
+   Index Cond: (name ~~ '%neusi%'::text)
+(2 строки)
+
+     name     
+--------------
+ Bruckneudorf
+ Bruckneudorf
+(2 строки)
+
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Index Scan using idx_trgm on t_location  (cost=0.15..8.17 rows=1 width=14)
+   Index Cond: (name ~ '[A-C].*neu.*'::text)
+(2 строки)
+
+                          to_tsvector                          
+---------------------------------------------------------------
+ 'car':2,6,14 'even':10 'mani':13 'mind':11 'want':4 'would':8
+(1 строка)
+
+                                       to_tsvector                                        
+------------------------------------------------------------------------------------------
+ 'a':1,5 'car':2,6,14 'even':10 'having':12 'i':3,7 'many':13 'mind':11 'not':9 'would':8
+(1 строка)
+
+  cfgname   
+------------
+ arabic
+ danish
+ dutch
+ english
+ finnish
+ french
+ german
+ greek
+ hungarian
+ indonesian
+ irish
+ italian
+ lithuanian
+ nepali
+ norwegian
+ portuguese
+ romanian
+ russian
+ simple
+ spanish
+ swedish
+ tamil
+ turkish
+(23 строки)
+
+ ?column? 
+----------
+ t
+(1 строка)
+
+ ?column? 
+----------
+ f
+(1 строка)
+
+CREATE INDEX
+ALTER TABLE
+-[ RECORD 1 ]+----------------------------
+alias        | asciiword
+description  | Word, all ASCII
+token        | go
+dictionaries | {english_stem}
+dictionary   | english_stem
+lexemes      | {go}
+-[ RECORD 2 ]+----------------------------
+alias        | blank
+description  | Space symbols
+token        |  
+dictionaries | {}
+dictionary   | 
+lexemes      | 
+-[ RECORD 3 ]+----------------------------
+alias        | asciiword
+description  | Word, all ASCII
+token        | to
+dictionaries | {english_stem}
+dictionary   | english_stem
+lexemes      | {}
+-[ RECORD 4 ]+----------------------------
+alias        | blank
+description  | Space symbols
+token        |  
+dictionaries | {}
+dictionary   | 
+lexemes      | 
+-[ RECORD 5 ]+----------------------------
+alias        | host
+description  | Host
+token        | www.postgresql-support.de
+dictionaries | {simple}
+dictionary   | simple
+lexemes      | {www.postgresql-support.de}
+
+-[ RECORD 1 ]-----
+word   | test
+ndoc   | 17
+nentry | 17
+-[ RECORD 2 ]-----
+word   | transform
+ndoc   | 15
+nentry | 15
+-[ RECORD 3 ]-----
+word   | extens
+ndoc   | 11
+nentry | 11
+
+CREATE EXTENSION
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+
