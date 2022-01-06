@@ -1,0 +1,272 @@
+                             Представление "pg_catalog.pg_stat_activity"
+     Столбец      |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+------------------+--------------------------+--------------------+-------------------+--------------
+ datid            | oid                      |                    |                   | 
+ datname          | name                     |                    |                   | 
+ pid              | integer                  |                    |                   | 
+ leader_pid       | integer                  |                    |                   | 
+ usesysid         | oid                      |                    |                   | 
+ usename          | name                     |                    |                   | 
+ application_name | text                     |                    |                   | 
+ client_addr      | inet                     |                    |                   | 
+ client_hostname  | text                     |                    |                   | 
+ client_port      | integer                  |                    |                   | 
+ backend_start    | timestamp with time zone |                    |                   | 
+ xact_start       | timestamp with time zone |                    |                   | 
+ query_start      | timestamp with time zone |                    |                   | 
+ state_change     | timestamp with time zone |                    |                   | 
+ wait_event_type  | text                     |                    |                   | 
+ wait_event       | text                     |                    |                   | 
+ state            | text                     |                    |                   | 
+ backend_xid      | xid                      |                    |                   | 
+ backend_xmin     | xid                      |                    |                   | 
+ query            | text                     |                    |                   | 
+ backend_type     | text                     |                    |                   | 
+
+SET
+      application_name       
+-----------------------------
+ www.cybertec-postgresql.com
+(1 строка)
+
+ pid  |          query_start          |         state_change          | state  |                        query                        
+------+-------------------------------+-------------------------------+--------+-----------------------------------------------------
+ 7612 |                               |                               |        | 
+ 7568 |                               |                               |        | 
+ 5192 | 2022-01-06 12:04:02.942737+03 | 2022-01-06 12:04:02.942744+03 | active | SELECT pid, query_start, state_change, state, query+
+      |                               |                               |        | FROM pg_stat_activity;
+ 5260 | 2022-01-06 12:04:00.884407+03 | 2022-01-06 12:04:00.889507+03 | idle   | SELECT pid, query_start, state_change, state, query+
+      |                               |                               |        | FROM pg_stat_activity;
+ 7516 |                               |                               |        | 
+ 7508 |                               |                               |        | 
+ 7536 |                               |                               |        | 
+(7 строк)
+
+                               Представление "pg_catalog.pg_stat_database"
+        Столбец        |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+-----------------------+--------------------------+--------------------+-------------------+--------------
+ datid                 | oid                      |                    |                   | 
+ datname               | name                     |                    |                   | 
+ numbackends           | integer                  |                    |                   | 
+ xact_commit           | bigint                   |                    |                   | 
+ xact_rollback         | bigint                   |                    |                   | 
+ blks_read             | bigint                   |                    |                   | 
+ blks_hit              | bigint                   |                    |                   | 
+ tup_returned          | bigint                   |                    |                   | 
+ tup_fetched           | bigint                   |                    |                   | 
+ tup_inserted          | bigint                   |                    |                   | 
+ tup_updated           | bigint                   |                    |                   | 
+ tup_deleted           | bigint                   |                    |                   | 
+ conflicts             | bigint                   |                    |                   | 
+ temp_files            | bigint                   |                    |                   | 
+ temp_bytes            | bigint                   |                    |                   | 
+ deadlocks             | bigint                   |                    |                   | 
+ checksum_failures     | bigint                   |                    |                   | 
+ checksum_last_failure | timestamp with time zone |                    |                   | 
+ blk_read_time         | double precision         |                    |                   | 
+ blk_write_time        | double precision         |                    |                   | 
+ stats_reset           | timestamp with time zone |                    |                   | 
+
+                             Представление "pg_catalog.pg_stat_user_tables"
+       Столбец       |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+---------------------+--------------------------+--------------------+-------------------+--------------
+ relid               | oid                      |                    |                   | 
+ schemaname          | name                     |                    |                   | 
+ relname             | name                     |                    |                   | 
+ seq_scan            | bigint                   |                    |                   | 
+ seq_tup_read        | bigint                   |                    |                   | 
+ idx_scan            | bigint                   |                    |                   | 
+ idx_tup_fetch       | bigint                   |                    |                   | 
+ n_tup_ins           | bigint                   |                    |                   | 
+ n_tup_upd           | bigint                   |                    |                   | 
+ n_tup_del           | bigint                   |                    |                   | 
+ n_tup_hot_upd       | bigint                   |                    |                   | 
+ n_live_tup          | bigint                   |                    |                   | 
+ n_dead_tup          | bigint                   |                    |                   | 
+ n_mod_since_analyze | bigint                   |                    |                   | 
+ n_ins_since_vacuum  | bigint                   |                    |                   | 
+ last_vacuum         | timestamp with time zone |                    |                   | 
+ last_autovacuum     | timestamp with time zone |                    |                   | 
+ last_analyze        | timestamp with time zone |                    |                   | 
+ last_autoanalyze    | timestamp with time zone |                    |                   | 
+ vacuum_count        | bigint                   |                    |                   | 
+ autovacuum_count    | bigint                   |                    |                   | 
+ analyze_count       | bigint                   |                    |                   | 
+ autoanalyze_count   | bigint                   |                    |                   | 
+
+ schemaname |    relname    | seq_scan | seq_tup_read |   avg   | idx_scan 
+------------+---------------+----------+--------------+---------+----------
+ public     | t_test        |       27 |     60000000 | 2222222 |        6
+ public     | t_random      |        6 |     12000000 | 2000000 |        6
+ public     | t_oil         |       66 |        82438 |    1249 |         
+ public     | t_location    |        6 |        18840 |    3140 |        2
+ public     | t_fts         |        1 |           86 |      86 |        0
+ public     | t_taxi        |        6 |           30 |       5 |         
+ public     | t_deadlock    |        8 |           15 |       1 |         
+ public     | t_sva         |        2 |            4 |       2 |         
+ public     | t_watermark   |        2 |            3 |       1 |         
+ public     | t_currency    |        1 |            0 |       0 |        2
+ public     | t_invoice     |        1 |            0 |       0 |        0
+ public     | t_reservation |        2 |            0 |       0 |        2
+ public     | t_bloom       |        1 |            0 |       0 |        0
+(13 строк)
+
+                 Представление "pg_catalog.pg_statio_user_tables"
+     Столбец     |  Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+-----------------+--------+--------------------+-------------------+--------------
+ relid           | oid    |                    |                   | 
+ schemaname      | name   |                    |                   | 
+ relname         | name   |                    |                   | 
+ heap_blks_read  | bigint |                    |                   | 
+ heap_blks_hit   | bigint |                    |                   | 
+ idx_blks_read   | bigint |                    |                   | 
+ idx_blks_hit    | bigint |                    |                   | 
+ toast_blks_read | bigint |                    |                   | 
+ toast_blks_hit  | bigint |                    |                   | 
+ tidx_blks_read  | bigint |                    |                   | 
+ tidx_blks_hit   | bigint |                    |                   | 
+
+                Представление "pg_catalog.pg_stat_user_indexes"
+    Столбец    |  Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------------+--------+--------------------+-------------------+--------------
+ relid         | oid    |                    |                   | 
+ indexrelid    | oid    |                    |                   | 
+ schemaname    | name   |                    |                   | 
+ relname       | name   |                    |                   | 
+ indexrelname  | name   |                    |                   | 
+ idx_scan      | bigint |                    |                   | 
+ idx_tup_read  | bigint |                    |                   | 
+ idx_tup_fetch | bigint |                    |                   | 
+
+ schemaname |    relname    |          indexrelname           | idx_scan |  idx_size  | total  
+------------+---------------+---------------------------------+----------+------------+--------
+ public     | t_test        | idx_id                          |        6 | 86 MB      | 113 MB
+ public     | t_invoice     | t_invoice_pkey                  |        0 | 16 kB      | 16 kB
+ public     | t_random      | idx_random                      |        6 | 86 MB      | 198 MB
+ public     | t_test        | idx_name                        |        0 | 8192 bytes | 24 kB
+ public     | t_test        | idx_name2                       |        0 | 26 MB      | 26 MB
+ public     | t_fts         | idx_fts_func                    |        0 | 16 kB      | 27 MB
+ public     | t_currency    | t_currency_pkey                 |        2 | 16 kB      | 27 MB
+ public     | t_test        | idx_brin                        |        0 | 24 kB      | 27 MB
+ public     | t_reservation | t_reservation_room_from_to_excl |        2 | 8192 bytes | 27 MB
+ public     | t_location    | idx_trgm                        |        2 | 408 kB     | 27 MB
+ public     | t_bloom       | idx_bloom                       |        0 | 8192 bytes | 27 MB
+(11 строк)
+
+                               Представление "pg_catalog.pg_stat_bgwriter"
+        Столбец        |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+-----------------------+--------------------------+--------------------+-------------------+--------------
+ checkpoints_timed     | bigint                   |                    |                   | 
+ checkpoints_req       | bigint                   |                    |                   | 
+ checkpoint_write_time | double precision         |                    |                   | 
+ checkpoint_sync_time  | double precision         |                    |                   | 
+ buffers_checkpoint    | bigint                   |                    |                   | 
+ buffers_clean         | bigint                   |                    |                   | 
+ maxwritten_clean      | bigint                   |                    |                   | 
+ buffers_backend       | bigint                   |                    |                   | 
+ buffers_backend_fsync | bigint                   |                    |                   | 
+ buffers_alloc         | bigint                   |                    |                   | 
+ stats_reset           | timestamp with time zone |                    |                   | 
+
+                              Представление "pg_catalog.pg_stat_archiver"
+      Столбец       |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+--------------------+--------------------------+--------------------+-------------------+--------------
+ archived_count     | bigint                   |                    |                   | 
+ last_archived_wal  | text                     |                    |                   | 
+ last_archived_time | timestamp with time zone |                    |                   | 
+ failed_count       | bigint                   |                    |                   | 
+ last_failed_wal    | text                     |                    |                   | 
+ last_failed_time   | timestamp with time zone |                    |                   | 
+ stats_reset        | timestamp with time zone |                    |                   | 
+
+                           Представление "pg_catalog.pg_stat_replication"
+     Столбец      |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+------------------+--------------------------+--------------------+-------------------+--------------
+ pid              | integer                  |                    |                   | 
+ usesysid         | oid                      |                    |                   | 
+ usename          | name                     |                    |                   | 
+ application_name | text                     |                    |                   | 
+ client_addr      | inet                     |                    |                   | 
+ client_hostname  | text                     |                    |                   | 
+ client_port      | integer                  |                    |                   | 
+ backend_start    | timestamp with time zone |                    |                   | 
+ backend_xmin     | xid                      |                    |                   | 
+ state            | text                     |                    |                   | 
+ sent_lsn         | pg_lsn                   |                    |                   | 
+ write_lsn        | pg_lsn                   |                    |                   | 
+ flush_lsn        | pg_lsn                   |                    |                   | 
+ replay_lsn       | pg_lsn                   |                    |                   | 
+ write_lag        | interval                 |                    |                   | 
+ flush_lag        | interval                 |                    |                   | 
+ replay_lag       | interval                 |                    |                   | 
+ sync_priority    | integer                  |                    |                   | 
+ sync_state       | text                     |                    |                   | 
+ reply_time       | timestamp with time zone |                    |                   | 
+
+                             Представление "pg_catalog.pg_stat_wal_receiver"
+        Столбец        |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+-----------------------+--------------------------+--------------------+-------------------+--------------
+ pid                   | integer                  |                    |                   | 
+ status                | text                     |                    |                   | 
+ receive_start_lsn     | pg_lsn                   |                    |                   | 
+ receive_start_tli     | integer                  |                    |                   | 
+ written_lsn           | pg_lsn                   |                    |                   | 
+ flushed_lsn           | pg_lsn                   |                    |                   | 
+ received_tli          | integer                  |                    |                   | 
+ last_msg_send_time    | timestamp with time zone |                    |                   | 
+ last_msg_receipt_time | timestamp with time zone |                    |                   | 
+ latest_end_lsn        | pg_lsn                   |                    |                   | 
+ latest_end_time       | timestamp with time zone |                    |                   | 
+ slot_name             | text                     |                    |                   | 
+ sender_host           | text                     |                    |                   | 
+ sender_port           | integer                  |                    |                   | 
+ conninfo              | text                     |                    |                   | 
+
+                     Представление "pg_catalog.pg_stat_ssl"
+    Столбец    |   Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------------+---------+--------------------+-------------------+--------------
+ pid           | integer |                    |                   | 
+ ssl           | boolean |                    |                   | 
+ version       | text    |                    |                   | 
+ cipher        | text    |                    |                   | 
+ bits          | integer |                    |                   | 
+ compression   | boolean |                    |                   | 
+ client_dn     | text    |                    |                   | 
+ client_serial | numeric |                    |                   | 
+ issuer_dn     | text    |                    |                   | 
+
+              Представление "pg_catalog.pg_stat_xact_user_tables"
+    Столбец    |  Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------------+--------+--------------------+-------------------+--------------
+ relid         | oid    |                    |                   | 
+ schemaname    | name   |                    |                   | 
+ relname       | name   |                    |                   | 
+ seq_scan      | bigint |                    |                   | 
+ seq_tup_read  | bigint |                    |                   | 
+ idx_scan      | bigint |                    |                   | 
+ idx_tup_fetch | bigint |                    |                   | 
+ n_tup_ins     | bigint |                    |                   | 
+ n_tup_upd     | bigint |                    |                   | 
+ n_tup_del     | bigint |                    |                   | 
+ n_tup_hot_upd | bigint |                    |                   | 
+
+                  Представление "pg_catalog.pg_stat_progress_vacuum"
+      Столбец       |   Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+--------------------+---------+--------------------+-------------------+--------------
+ pid                | integer |                    |                   | 
+ datid              | oid     |                    |                   | 
+ datname            | name    |                    |                   | 
+ relid              | oid     |                    |                   | 
+ phase              | text    |                    |                   | 
+ heap_blks_total    | bigint  |                    |                   | 
+ heap_blks_scanned  | bigint  |                    |                   | 
+ heap_blks_vacuumed | bigint  |                    |                   | 
+ index_vacuum_count | bigint  |                    |                   | 
+ max_dead_tuples    | bigint  |                    |                   | 
+ num_dead_tuples    | bigint  |                    |                   | 
+
+ track_activity_query_size 
+---------------------------
+ 1kB
+(1 строка)
+
