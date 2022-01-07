@@ -1,0 +1,471 @@
+CREATE FUNCTION
+         ld          
+---------------------
+ 10.0000000000000000
+(1 строка)
+
+CREATE TABLE
+CREATE TABLE
+                                QUERY PLAN                                 
+---------------------------------------------------------------------------
+ Nested Loop Left Join  (cost=0.31..16.36 rows=1 width=8)
+   Join Filter: (x.id = y.id)
+   ->  Index Only Scan using x_pkey on x  (cost=0.15..8.17 rows=1 width=4)
+         Index Cond: (id = 3)
+   ->  Index Only Scan using y_pkey on y  (cost=0.15..8.17 rows=1 width=4)
+         Index Cond: (id = 3)
+(6 строк)
+
+                             QUERY PLAN                              
+---------------------------------------------------------------------
+ Index Only Scan using x_pkey on x  (cost=0.15..8.17 rows=1 width=4)
+   Index Cond: (id = 3)
+(2 строки)
+
+ANALYZE
+                                                 QUERY PLAN                                                  
+-------------------------------------------------------------------------------------------------------------
+ Seq Scan on t_estimate  (cost=0.00..220.00 rows=3333 width=4) (actual time=0.011..1.483 rows=10000 loops=1)
+   Filter: (cos((id)::double precision) < '4'::double precision)
+ Planning Time: 0.076 ms
+ Execution Time: 1.736 ms
+(4 строки)
+
+                                               QUERY PLAN                                                
+---------------------------------------------------------------------------------------------------------
+ Seq Scan on t_estimate  (cost=0.00..220.00 rows=3333 width=4) (actual time=1.343..1.344 rows=0 loops=1)
+   Filter: (cos((id)::double precision) > '4'::double precision)
+   Rows Removed by Filter: 10000
+ Planning Time: 0.057 ms
+ Execution Time: 1.353 ms
+(5 строк)
+
+CREATE INDEX
+ANALYZE
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_cosine on t_estimate  (cost=0.29..8.30 rows=1 width=4) (actual time=0.004..0.004 rows=0 loops=1)
+   Index Cond: (cos((id)::double precision) > '4'::double precision)
+ Planning Time: 0.171 ms
+ Execution Time: 0.014 ms
+(4 строки)
+
+ANALYZE
+                                                        QUERY PLAN                                                        
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_random on t_random  (cost=0.43..38.34 rows=966 width=9) (actual time=0.007..0.369 rows=999 loops=1)
+   Index Cond: (id < 1000)
+   Buffers: shared hit=4 read=7
+ Planning:
+   Buffers: shared hit=8 read=5
+ Planning Time: 0.587 ms
+ Execution Time: 0.407 ms
+(7 строк)
+
+CREATE TABLE
+CREATE TABLE
+INSERT 0 3
+INSERT 0 3
+ aid | bid 
+-----+-----
+   1 |    
+   2 |   2
+   3 |   3
+(3 строки)
+
+ aid | bid 
+-----+-----
+   1 |    
+   2 |   2
+   3 |    
+(3 строки)
+
+        avg         |        avg         
+--------------------+--------------------
+ 2.0000000000000000 | 2.0000000000000000
+(1 строка)
+
+                                        QUERY PLAN                                         
+-------------------------------------------------------------------------------------------
+ Merge Join  (cost=428.98..48286.48 rows=3125000 width=24)
+   Merge Cond: (a.id = d.id)
+   CTE x
+     ->  Function Scan on generate_series id  (cost=0.00..10.00 rows=1000 width=4)
+   ->  Merge Join  (cost=209.49..669.49 rows=25000 width=12)
+         Merge Cond: (c.id = a.id)
+         ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+               Sort Key: c.id
+               ->  CTE Scan on x c  (cost=0.00..20.00 rows=1000 width=4)
+         ->  Materialize  (cost=139.66..232.16 rows=5000 width=8)
+               ->  Merge Join  (cost=139.66..219.66 rows=5000 width=8)
+                     Merge Cond: (a.id = b.id)
+                     ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+                           Sort Key: a.id
+                           ->  CTE Scan on x a  (cost=0.00..20.00 rows=1000 width=4)
+                     ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+                           Sort Key: b.id
+                           ->  CTE Scan on x b  (cost=0.00..20.00 rows=1000 width=4)
+   ->  Materialize  (cost=209.49..731.99 rows=25000 width=12)
+         ->  Merge Join  (cost=209.49..669.49 rows=25000 width=12)
+               Merge Cond: (f.id = d.id)
+               ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+                     Sort Key: f.id
+                     ->  CTE Scan on x f  (cost=0.00..20.00 rows=1000 width=4)
+               ->  Materialize  (cost=139.66..232.16 rows=5000 width=8)
+                     ->  Merge Join  (cost=139.66..219.66 rows=5000 width=8)
+                           Merge Cond: (d.id = e.id)
+                           ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+                                 Sort Key: d.id
+                                 ->  CTE Scan on x d  (cost=0.00..20.00 rows=1000 width=4)
+                           ->  Sort  (cost=69.83..72.33 rows=1000 width=4)
+                                 Sort Key: e.id
+                                 ->  CTE Scan on x e  (cost=0.00..20.00 rows=1000 width=4)
+(33 строки)
+
+                                     QUERY PLAN                                     
+------------------------------------------------------------------------------------
+ Hash Join  (cost=2.25..4.63 rows=100 width=8)
+   Hash Cond: (a.a = b.b)
+   ->  Function Scan on generate_series a  (cost=0.00..1.00 rows=100 width=4)
+   ->  Hash  (cost=1.00..1.00 rows=100 width=4)
+         ->  Function Scan on generate_series b  (cost=0.00..1.00 rows=100 width=4)
+(5 строк)
+
+SET
+                                     QUERY PLAN                                     
+------------------------------------------------------------------------------------
+ Hash Join  (cost=2.25..4.63 rows=100 width=8)
+   Hash Cond: (a.a = b.b)
+   ->  Function Scan on generate_series a  (cost=0.00..1.00 rows=100 width=4)
+   ->  Hash  (cost=1.00..1.00 rows=100 width=4)
+         ->  Function Scan on generate_series b  (cost=0.00..1.00 rows=100 width=4)
+(5 строк)
+
+SET
+                                  QUERY PLAN                                  
+------------------------------------------------------------------------------
+ Nested Loop  (cost=0.01..226.00 rows=100 width=8)
+   Join Filter: (a.a = b.b)
+   ->  Function Scan on generate_series a  (cost=0.00..1.00 rows=100 width=4)
+   ->  Function Scan on generate_series b  (cost=0.00..1.00 rows=100 width=4)
+(4 строки)
+
+SET
+                                  QUERY PLAN                                  
+------------------------------------------------------------------------------
+ Nested Loop  (cost=10000000000.00..10000000226.00 rows=100 width=8)
+   Join Filter: (a.a = b.b)
+   ->  Function Scan on generate_series a  (cost=0.00..1.00 rows=100 width=4)
+   ->  Function Scan on generate_series b  (cost=0.00..1.00 rows=100 width=4)
+(4 строки)
+
+ geqo 
+------
+ on
+(1 строка)
+
+SET
+ geqo_threshold 
+----------------
+ 12
+(1 строка)
+
+CREATE TABLE
+CREATE TABLE
+                                  Таблица "public.t_date_2016"
+ Столбец |   Тип   | Правило сортировки | Допустимость NULL |            По умолчанию            
+---------+---------+--------------------+-------------------+------------------------------------
+ id      | integer |                    | not null          | nextval('t_data_id_seq'::regclass)
+ t       | date    |                    |                   | 
+ payload | text    |                    |                   | 
+Наследует: t_data
+
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 1
+ id |     t      |  payload  
+----+------------+-----------
+  1 | 2015-05-04 | some data
+(1 строка)
+
+                                  QUERY PLAN                                   
+-------------------------------------------------------------------------------
+ Append  (cost=0.00..106.16 rows=4411 width=40)
+   ->  Seq Scan on t_data t_data_1  (cost=0.00..0.00 rows=1 width=40)
+   ->  Seq Scan on t_date_2016 t_data_2  (cost=0.00..22.00 rows=1200 width=40)
+   ->  Seq Scan on t_data_2015 t_data_3  (cost=0.00..22.00 rows=1200 width=40)
+   ->  Seq Scan on t_data_2014 t_data_4  (cost=0.00..22.00 rows=1200 width=40)
+   ->  Seq Scan on t_data_2013 t_data_5  (cost=0.00..18.10 rows=810 width=40)
+(6 строк)
+
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Append  (cost=0.00..95.24 rows=23 width=40)
+   ->  Seq Scan on t_data t_data_1  (cost=0.00..0.00 rows=1 width=40)
+         Filter: (t = '2016-01-04'::date)
+   ->  Seq Scan on t_date_2016 t_data_2  (cost=0.00..25.00 rows=6 width=40)
+         Filter: (t = '2016-01-04'::date)
+   ->  Seq Scan on t_data_2015 t_data_3  (cost=0.00..25.00 rows=6 width=40)
+         Filter: (t = '2016-01-04'::date)
+   ->  Seq Scan on t_data_2014 t_data_4  (cost=0.00..25.00 rows=6 width=40)
+         Filter: (t = '2016-01-04'::date)
+   ->  Seq Scan on t_data_2013 t_data_5  (cost=0.00..20.13 rows=4 width=40)
+         Filter: (t = '2016-01-04'::date)
+(11 строк)
+
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Append  (cost=0.00..25.04 rows=7 width=40)
+   ->  Seq Scan on t_data t_data_1  (cost=0.00..0.00 rows=1 width=40)
+         Filter: (t = '2016-01-04'::date)
+   ->  Seq Scan on t_date_2016 t_data_2  (cost=0.00..25.00 rows=6 width=40)
+         Filter: (t = '2016-01-04'::date)
+(5 строк)
+
+ALTER TABLE
+                                  Таблица "public.t_date_2016"
+ Столбец |   Тип   | Правило сортировки | Допустимость NULL |            По умолчанию            
+---------+---------+--------------------+-------------------+------------------------------------
+ id      | integer |                    | not null          | nextval('t_data_id_seq'::regclass)
+ t       | date    |                    |                   | 
+ payload | text    |                    |                   | 
+ x       | integer |                    |                   | 
+Наследует: t_data
+
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+                        Таблица "public.positives"
+ Столбец |   Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------+---------+--------------------+-------------------+--------------
+ payload | integer |                    |                   | 
+Секция из: data FOR VALUES FROM (0) TO (MAXVALUE)
+Индексы:
+    "positives_payload_idx" btree (payload)
+
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+ payload 
+---------
+       1
+      -1
+(2 строки)
+
+ payload 
+---------
+       1
+(1 строка)
+
+ payload 
+---------
+      -1
+(1 строка)
+
+SET
+INSERT 0 100000
+INSERT 0 100000
+ name |  count  
+------+---------
+ paul | 2100000
+ hans | 2100000
+(2 строки)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=85702.73..85702.75 rows=2 width=13) (actual time=917.274..917.275 rows=2 loops=1)
+   Group Key: name
+   Batches: 1  Memory Usage: 24kB
+   ->  Seq Scan on t_test  (cost=0.00..64702.82 rows=4199982 width=5) (actual time=0.062..262.382 rows=4200000 loops=1)
+ Planning Time: 0.142 ms
+ Execution Time: 917.306 ms
+(6 строк)
+
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=0.43..173156.89 rows=4199982 width=12) (actual time=0.068..1225.121 rows=4200000 loops=1)
+   Group Key: id
+   ->  Index Only Scan using idx_id on t_test  (cost=0.43..110157.16 rows=4199982 width=4) (actual time=0.062..442.365 rows=4200000 loops=1)
+         Heap Fetches: 200115
+ Planning Time: 0.172 ms
+ Execution Time: 1325.189 ms
+(6 строк)
+
+ work_mem 
+----------
+ 4MB
+(1 строка)
+
+SET
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=85702.73..127702.55 rows=4199982 width=12) (actual time=1465.456..2324.582 rows=4200000 loops=1)
+   Group Key: id
+   Batches: 1  Memory Usage: 532497kB
+   ->  Seq Scan on t_test  (cost=0.00..64702.82 rows=4199982 width=4) (actual time=0.055..276.403 rows=4200000 loops=1)
+ Planning Time: 0.113 ms
+ Execution Time: 2464.388 ms
+(6 строк)
+
+SET
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=670297.83..680797.78 rows=4199982 width=9) (actual time=1785.523..2396.013 rows=4200000 loops=1)
+   Sort Key: name, id
+   Sort Method: external merge  Disk: 78064kB
+   ->  Seq Scan on t_test  (cost=0.00..64702.82 rows=4199982 width=9) (actual time=0.044..263.717 rows=4200000 loops=1)
+ Planning Time: 0.145 ms
+ Execution Time: 2501.858 ms
+(6 строк)
+
+SET
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=526741.83..537241.78 rows=4199982 width=9) (actual time=3290.715..3401.505 rows=4200000 loops=1)
+   Sort Key: name, id
+   Sort Method: quicksort  Memory: 393484kB
+   ->  Seq Scan on t_test  (cost=0.00..64702.82 rows=4199982 width=9) (actual time=0.049..263.819 rows=4200000 loops=1)
+ Planning Time: 0.140 ms
+ Execution Time: 3510.890 ms
+(6 строк)
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=118011.37..118011.79 rows=10 width=9) (actual time=526.113..526.115 rows=10 loops=1)
+   ->  Incremental Sort  (cost=118011.37..293772.11 rows=4199982 width=9) (actual time=526.112..526.113 rows=10 loops=1)
+         Sort Key: name, id
+         Presorted Key: name
+         Full-sort Groups: 1  Sort Method: top-N heapsort  Average Memory: 25kB  Peak Memory: 25kB
+         Pre-sorted Groups: 1  Sort Method: top-N heapsort  Average Memory: 25kB  Peak Memory: 25kB
+         ->  Index Scan using idx_name2 on t_test  (cost=0.43..99882.16 rows=4199982 width=9) (actual time=0.070..277.626 rows=2100001 loops=1)
+ Planning Time: 0.111 ms
+ Execution Time: 526.128 ms
+(9 строк)
+
+SET
+SET
+CREATE INDEX
+ max_parallel_maintenance_workers 
+----------------------------------
+ 2
+(1 строка)
+
+SELECT 25000000
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Aggregate  (cost=463221.25..463221.26 rows=1 width=8)
+   ->  Seq Scan on t_parallel  (cost=0.00..392701.00 rows=28208100 width=0)
+(2 строки)
+
+ max_parallel_workers_per_gather 
+---------------------------------
+ 0
+(1 строка)
+
+ min_parallel_table_scan_size 
+------------------------------
+ 8MB
+(1 строка)
+
+                                         Список отношений
+ Схема  |      Имя      |           Тип            | Владелец |  Хранение  |   Размер   | Описание 
+--------+---------------+--------------------------+----------+------------+------------+----------
+ public | a             | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | b             | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | data          | секционированная таблица | jigsaw   | постоянное | 0 bytes    | 
+ public | p_def         | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | positives     | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_account     | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_bloom       | таблица                  | jigsaw   | постоянное | 0 bytes    | 
+ public | t_currency    | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_data_2013   | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_deadlock    | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_estimate    | таблица                  | jigsaw   | постоянное | 392 kB     | 
+ public | t_flight      | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_fts         | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_history     | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_invoice     | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | t_location    | таблица                  | jigsaw   | постоянное | 256 kB     | 
+ public | t_oil         | таблица                  | jigsaw   | постоянное | 128 kB     | 
+ public | t_parallel    | таблица                  | jigsaw   | постоянное | 864 MB     | 
+ public | t_random      | таблица                  | jigsaw   | постоянное | 169 MB     | 
+ public | t_reservation | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_sva         | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_taxi        | таблица                  | jigsaw   | постоянное | 16 kB      | 
+ public | t_test        | таблица                  | jigsaw   | постоянное | 177 MB     | 
+ public | t_test_id_seq | последовательность       | jigsaw   | постоянное | 8192 bytes | 
+ public | t_watermark   | таблица                  | jigsaw   | постоянное | 8192 bytes | 
+ public | x             | таблица                  | jigsaw   | постоянное | 0 bytes    | 
+ public | y             | таблица                  | jigsaw   | постоянное | 0 bytes    | 
+(27 строк)
+
+SET
+                                           QUERY PLAN                                           
+------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=174120.52..174120.53 rows=1 width=8)
+   ->  Gather  (cost=174120.00..174120.51 rows=5 width=8)
+         Workers Planned: 5
+         ->  Partial Aggregate  (cost=173120.00..173120.01 rows=1 width=8)
+               ->  Parallel Seq Scan on t_parallel  (cost=0.00..160620.00 rows=5000000 width=0)
+(5 строк)
+
+ALTER TABLE
+                                           QUERY PLAN                                           
+------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=146342.71..146342.72 rows=1 width=8)
+   ->  Gather  (cost=146341.77..146342.68 rows=9 width=8)
+         Workers Planned: 9
+         ->  Partial Aggregate  (cost=145341.77..145341.79 rows=1 width=8)
+               ->  Parallel Seq Scan on t_parallel  (cost=0.00..138397.42 rows=2777742 width=0)
+(5 строк)
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=146342.71..146342.72 rows=1 width=8) (actual time=493.625..502.583 rows=1 loops=1)
+   ->  Gather  (cost=146341.77..146342.68 rows=9 width=8) (actual time=493.479..502.575 rows=8 loops=1)
+         Workers Planned: 9
+         Workers Launched: 7
+         ->  Partial Aggregate  (cost=145341.77..145341.79 rows=1 width=8) (actual time=431.186..431.186 rows=1 loops=8)
+               ->  Parallel Seq Scan on t_parallel  (cost=0.00..138397.42 rows=2777742 width=0) (actual time=0.687..299.192 rows=3125000 loops=8)
+ Planning Time: 0.064 ms
+ Execution Time: 502.616 ms
+(8 строк)
+
+ max_worker_processes 
+----------------------
+ 8
+(1 строка)
+
+ max_parallel_workers 
+----------------------
+ 8
+(1 строка)
+
+ max_parallel_maintenance_workers 
+----------------------------------
+ 2
+(1 строка)
+
+                              QUERY PLAN                              
+----------------------------------------------------------------------
+ Seq Scan on t_parallel  (cost=0.00..360616.78 rows=24999678 width=4)
+(1 строка)
+
+SET
+                                 QUERY PLAN                                 
+----------------------------------------------------------------------------
+ Gather  (cost=1000.00..2861584.58 rows=24999678 width=4)
+   Workers Planned: 1
+   Single Copy: true
+   ->  Seq Scan on t_parallel  (cost=0.00..360616.78 rows=24999678 width=4)
+(4 строки)
+
