@@ -1,0 +1,190 @@
+                     Представление "pg_catalog.pg_stat_ssl"
+    Столбец    |   Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------------+---------+--------------------+-------------------+--------------
+ pid           | integer |                    |                   | 
+ ssl           | boolean |                    |                   | 
+ version       | text    |                    |                   | 
+ cipher        | text    |                    |                   | 
+ bits          | integer |                    |                   | 
+ compression   | boolean |                    |                   | 
+ client_dn     | text    |                    |                   | 
+ client_serial | numeric |                    |                   | 
+ issuer_dn     | text    |                    |                   | 
+
+  pid  | ssl | version | cipher | bits | compression | client_dn | client_serial | issuer_dn 
+-------+-----+---------+--------+------+-------------+-----------+---------------+-----------
+  7324 | f   |         |        |      |             |           |               | 
+ 15368 | f   |         |        |      |             |           |               | 
+(2 строки)
+
+CREATE ROLE
+CREATE ROLE
+GRANT ROLE
+ALTER ROLE
+ current_user 
+--------------
+ jigsaw
+(1 строка)
+
+ALTER ROLE
+             now              
+------------------------------
+ 2022-01-08 07:54:19.66437+03
+(1 строка)
+
+REVOKE
+GRANT
+CREATE ROLE
+CREATE SCHEMA
+CREATE TABLE
+                        Список отношений
+ Схема  |       Имя        |           Тип            | Владелец 
+--------+------------------+--------------------------+----------
+ public | Some stupid name | таблица                  | jigsaw
+ public | a                | таблица                  | jigsaw
+ public | b                | таблица                  | jigsaw
+ public | data             | секционированная таблица | jigsaw
+ public | p_def            | таблица                  | jigsaw
+ public | positives        | таблица                  | jigsaw
+ public | t_account        | таблица                  | jigsaw
+ public | t_bloom          | таблица                  | jigsaw
+ public | t_broken         | таблица                  | jigsaw
+ public | t_currency       | таблица                  | jigsaw
+ public | t_data_2013      | таблица                  | jigsaw
+ public | t_deadlock       | таблица                  | jigsaw
+ public | t_estimate       | таблица                  | jigsaw
+ public | t_flight         | таблица                  | jigsaw
+ public | t_fts            | таблица                  | jigsaw
+ public | t_history        | таблица                  | jigsaw
+ public | t_invoice        | таблица                  | jigsaw
+ public | t_location       | таблица                  | jigsaw
+ public | t_oil            | таблица                  | jigsaw
+ public | t_parallel       | таблица                  | jigsaw
+ public | t_random         | таблица                  | jigsaw
+ public | t_reservation    | таблица                  | jigsaw
+ public | t_sensor         | таблица                  | jigsaw
+ public | t_sensor_id_seq  | последовательность       | jigsaw
+ public | t_sva            | таблица                  | jigsaw
+ public | t_taxi           | таблица                  | jigsaw
+ public | t_test           | таблица                  | jigsaw
+ public | t_test_id_seq    | последовательность       | jigsaw
+ public | t_watermark      | таблица                  | jigsaw
+ public | x                | таблица                  | jigsaw
+ public | y                | таблица                  | jigsaw
+(31 строка)
+
+REVOKE
+   search_path   
+-----------------
+ "$user", public
+(1 строка)
+
+GRANT
+ count 
+-------
+     0
+(1 строка)
+
+ALTER TABLE
+GRANT
+                         Таблица "public.t_useful"
+ Столбец |   Тип   | Правило сортировки | Допустимость NULL | По умолчанию 
+---------+---------+--------------------+-------------------+--------------
+ id      | integer |                    |                   | 
+ name    | text    |                    |                   | 
+
+CREATE ROLE
+GRANT
+GRANT
+GRANT
+ALTER DEFAULT PRIVILEGES
+CREATE TABLE
+INSERT 0 4
+INSERT 0 4
+GRANT
+ALTER TABLE
+ gender | name  
+--------+-------
+ male   | joe
+ male   | paul
+ female | sarah
+        | R2-D2
+ male   | joe
+ male   | paul
+ female | sarah
+        | R2-D2
+(8 строк)
+
+CREATE POLICY
+ gender | name  
+--------+-------
+ male   | joe
+ male   | paul
+ female | sarah
+        | R2-D2
+ male   | joe
+ male   | paul
+ female | sarah
+        | R2-D2
+(8 строк)
+
+CREATE POLICY
+                         QUERY PLAN                         
+------------------------------------------------------------
+ Seq Scan on t_person  (cost=0.00..18.80 rows=880 width=64)
+(1 строка)
+
+INSERT 0 1
+GRANT
+Права доступа
+-[ RECORD 1 ]------+-------------------------------
+Схема              | public
+Имя                | t_person
+Тип                | таблица
+Права доступа      | jigsaw=arwdDxt/jigsaw         +
+                   | joe=arwdDxt/jigsaw
+Права для столбцов | 
+Политики           | joe_pol_1 (r):                +
+                   |   (u): (gender = 'male'::text)+
+                   |   to: joe                     +
+                   | joe_pol_2 (r):                +
+                   |   (u): (gender IS NULL)       +
+                   |   to: joe
+
+-[ RECORD 1 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | INSERT
+is_grantable   | f
+-[ RECORD 2 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | SELECT
+is_grantable   | f
+-[ RECORD 3 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | UPDATE
+is_grantable   | f
+-[ RECORD 4 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | DELETE
+is_grantable   | f
+-[ RECORD 5 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | TRUNCATE
+is_grantable   | f
+-[ RECORD 6 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | REFERENCES
+is_grantable   | f
+-[ RECORD 7 ]--+-----------
+grantor        | 10
+grantee        | 41680
+privilege_type | TRIGGER
+is_grantable   | f
+
+REASSIGN OWNED
