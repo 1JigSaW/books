@@ -1,0 +1,115 @@
+                              Представление "pg_catalog.pg_stat_archiver"
+      Столбец       |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+--------------------+--------------------------+--------------------+-------------------+--------------
+ archived_count     | bigint                   |                    |                   | 
+ last_archived_wal  | text                     |                    |                   | 
+ last_archived_time | timestamp with time zone |                    |                   | 
+ failed_count       | bigint                   |                    |                   | 
+ last_failed_wal    | text                     |                    |                   | 
+ last_failed_time   | timestamp with time zone |                    |                   | 
+ stats_reset        | timestamp with time zone |                    |                   | 
+
+Список функций
+-[ RECORD 1 ]----------+------------------------
+Схема                  | pg_catalog
+Имя                    | pg_is_wal_replay_paused
+Тип данных результата  | boolean
+Типы данных аргументов | 
+Тип                    | функ.
+-[ RECORD 2 ]----------+------------------------
+Схема                  | pg_catalog
+Имя                    | pg_wal_replay_pause
+Тип данных результата  | void
+Типы данных аргументов | 
+Тип                    | функ.
+
+-[ RECORD 1 ]-----------+-----------
+pg_create_restore_point | 0/BAE18DF0
+
+CREATE ROLE
+
+                           Представление "pg_catalog.pg_stat_replication"
+     Столбец      |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+------------------+--------------------------+--------------------+-------------------+--------------
+ pid              | integer                  |                    |                   | 
+ usesysid         | oid                      |                    |                   | 
+ usename          | name                     |                    |                   | 
+ application_name | text                     |                    |                   | 
+ client_addr      | inet                     |                    |                   | 
+ client_hostname  | text                     |                    |                   | 
+ client_port      | integer                  |                    |                   | 
+ backend_start    | timestamp with time zone |                    |                   | 
+ backend_xmin     | xid                      |                    |                   | 
+ state            | text                     |                    |                   | 
+ sent_lsn         | pg_lsn                   |                    |                   | 
+ write_lsn        | pg_lsn                   |                    |                   | 
+ flush_lsn        | pg_lsn                   |                    |                   | 
+ replay_lsn       | pg_lsn                   |                    |                   | 
+ write_lag        | interval                 |                    |                   | 
+ flush_lag        | interval                 |                    |                   | 
+ replay_lag       | interval                 |                    |                   | 
+ sync_priority    | integer                  |                    |                   | 
+ sync_state       | text                     |                    |                   | 
+ reply_time       | timestamp with time zone |                    |                   | 
+
+                             Представление "pg_catalog.pg_stat_wal_receiver"
+        Столбец        |           Тип            | Правило сортировки | Допустимость NULL | По умолчанию 
+-----------------------+--------------------------+--------------------+-------------------+--------------
+ pid                   | integer                  |                    |                   | 
+ status                | text                     |                    |                   | 
+ receive_start_lsn     | pg_lsn                   |                    |                   | 
+ receive_start_tli     | integer                  |                    |                   | 
+ written_lsn           | pg_lsn                   |                    |                   | 
+ flushed_lsn           | pg_lsn                   |                    |                   | 
+ received_tli          | integer                  |                    |                   | 
+ last_msg_send_time    | timestamp with time zone |                    |                   | 
+ last_msg_receipt_time | timestamp with time zone |                    |                   | 
+ latest_end_lsn        | pg_lsn                   |                    |                   | 
+ latest_end_time       | timestamp with time zone |                    |                   | 
+ slot_name             | text                     |                    |                   | 
+ sender_host           | text                     |                    |                   | 
+ sender_port           | integer                  |                    |                   | 
+ conninfo              | text                     |                    |                   | 
+
+Список функций
+-[ RECORD 1 ]----------+-------------------------------------------------------------------------------------------------------------------------------
+Схема                  | pg_catalog
+Имя                    | pg_create_physical_replication_slot
+Тип данных результата  | record
+Типы данных аргументов | slot_name name, immediately_reserve boolean DEFAULT false, temporary boolean DEFAULT false, OUT slot_name name, OUT lsn pg_lsn
+Тип                    | функ.
+
+-[ RECORD 1 ]-------------
+slot_name | some_slot_name
+lsn       | 0/BAE1A180
+
+-[ RECORD 1 ]-------+---------------
+slot_name           | some_slot_name
+plugin              | 
+slot_type           | physical
+datoid              | 
+database            | 
+temporary           | f
+active              | f
+active_pid          | 
+xmin                | 
+catalog_xmin        | 
+restart_lsn         | 0/BAE1A180
+confirmed_flush_lsn | 
+wal_status          | reserved
+safe_wal_size       | 
+
+Список функций
+-[ RECORD 1 ]----------+-------------------------
+Схема                  | pg_catalog
+Имя                    | pg_drop_replication_slot
+Тип данных результата  | void
+Типы данных аргументов | name
+Тип                    | функ.
+
+DELETE 3
+ALTER TABLE
+CREATE DATABASE
+CREATE TABLE
+CREATE PUBLICATION
+
