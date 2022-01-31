@@ -1,0 +1,1 @@
+export default new Expedition ("Mt. FReel", 2, ["water", "snack"]);
