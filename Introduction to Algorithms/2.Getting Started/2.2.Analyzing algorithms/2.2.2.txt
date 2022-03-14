@@ -1,0 +1,15 @@
+min = A[0]
+for i = 0 to A.length
+	min = i
+	for j = i + 1 to A.length
+		if A[min] > A[j]
+			min = A[j]
+	A[i] = A[min]
+	A[min] = A[i]
+
+
+A[min] > A[j]
+
+Последний элемент проставится на последней итерации автоматом
+
+O(n) и O(n^2)
