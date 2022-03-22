@@ -1,0 +1,8 @@
+a) То что дошли до конца массива
+
+б) for i to A.length
+	for j to A.length + 1
+
+в) i < j
+
+г) O(n^3)
