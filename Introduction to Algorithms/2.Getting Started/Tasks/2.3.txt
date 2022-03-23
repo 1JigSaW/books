@@ -1,0 +1,7 @@
+а) O(kn)
+
+б) O(n^k)
+for i to n
+	y *= a + x * y
+
+в)
