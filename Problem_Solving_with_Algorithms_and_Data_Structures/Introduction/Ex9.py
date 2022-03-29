@@ -28,6 +28,9 @@ class Fraction:
     def __str__(self):
         return str(self.num)+"/"+str(self.den)
 
+    def __repr__(self):
+        return str(self.num)+"/"+str(self.den)
+
     def __add__(self, otherfraction):
         newnum = self.num * otherfraction.den + self.den * otherfraction.num
         newden = self.den * otherfraction.den
@@ -38,7 +41,7 @@ class Fraction:
         newden = self.den * otherfraction.den
         return Fraction(newnum, newden)
 
-    def __add__(self, otherfraction):
+    def __iadd__(self, otherfraction):
         newnum = self.num * otherfraction.den + self.den * otherfraction.num
         newden = self.den * otherfraction.den
         return Fraction(newnum, newden)
