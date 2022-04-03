@@ -5,14 +5,21 @@ class UnorderedList:
 
     def __init__(self):
         self.head = None
+        self.tail = None
 
     def isEmpty(self):
         return self.head == None
 
     def add(self,item):
+        # temp = Node(item)
+        # temp.setNext(self.head)
+        # self.head = temp
         temp = Node(item)
-        temp.setNext(self.head)
-        self.head = temp
+        if self.head == None:
+            self.tail = self.head = temp
+        else:
+            temp.setNext(self.head)
+            self.head = temp
 
     def size(self):
         current = self.head
@@ -51,13 +58,19 @@ class UnorderedList:
             previous.setNext(current.getNext())
 
     def append(self, item):
-        current = self.head
-        prev = None
-        while current != None:
-            prev = current
-            current = current.getNext()
-        temp = prev.setNext(Node(item))
-        current = temp
+        # current = self.head
+        # prev = None
+        # while current != None:
+        #     prev = current
+        #     current = current.getNext()
+        # temp = prev.setNext(Node(item))
+        # current = temp
+        temp = Node(item)
+        if self.head == None:
+            self.tail = self.head = temp
+        else:
+            self.tail.setNext(temp)
+            self.tail = temp
 
 
 mylist = UnorderedList()
@@ -86,3 +99,4 @@ print(mylist.search(93))
 mylist.append(544)
 print(mylist.size())
 print(mylist.search(544))
+print(mylist.tail)
