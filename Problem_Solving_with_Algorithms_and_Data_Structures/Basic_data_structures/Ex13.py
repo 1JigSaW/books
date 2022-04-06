@@ -42,8 +42,12 @@ class UnorderedList:
         previous = None
         found = False
         while not found:
-            if current.getData() == item:
-                found = True
+            try:
+                if current.getData() == item:
+                    found = True
+            except:
+                print('Такого объекта не существует')
+                break
             else:
                 previous = current
                 current = current.getNext()
@@ -51,7 +55,10 @@ class UnorderedList:
         if previous == None:
             self.head = current.getNext()
         else:
-            previous.setNext(current.getNext())
+            try:
+                previous.setNext(current.getNext())
+            except:
+                pass
         self.size1 -= 1
 
     def append(self, item):

@@ -70,6 +70,16 @@ class UnorderedList:
             self.tail = temp
         self.size1 += 1
 
+    def __str__(self):
+        current = self.head
+        found = False
+        str_list = ''
+        while current != None:
+            str_list += str(current.data) + ', '
+            current = current.getNext()
+        str_list = str_list[0: len(str_list) - 2]
+        return '[' + str_list + ']'
+
 
 mylist = UnorderedList()
 mylist.add(31)
@@ -98,4 +108,5 @@ mylist.append(544)
 print(mylist.size())
 print(mylist.search(544))
 print(mylist.tail)
-mylist.remove(345435)
+#mylist.remove(345435)
+print(mylist)

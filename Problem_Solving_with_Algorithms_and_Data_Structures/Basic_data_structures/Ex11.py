@@ -1,46 +1,53 @@
 from L_stack import Stack
 
-def parChecker(symbolString):
-    s = Stack()
-    symbol = ''
-    balanced = True
-    index = 0
-    tags = ['<html>', '<head>', '<title>', '<body>', '<h1>']
-    while index < len(symbolString) and balanced:
-        if symbolString[index] == '<':
-            while symbolString[index] != '>':
-                symbol += symbolString[index]
-        print(symbol)
-        if symbol in tags:
-            s.push(symbol)
-        else:
-            if s.isEmpty():
-                balanced = False
+def validateHTMLTags(htmlStr):
+    stack = Stack()
+    hsize = len(htmlStr)
+    i = 0
+    while i < hsize:
+        tag = []
+        openTag = True
+        if htmlStr[i] == '<':
+            tag.append('<')
+            i += 1
+            if htmlStr[i] == '/':
+                openTag = False
+                i += 1
+            while (i < hsize) and htmlStr[i] == ' ':
+                i += 1
+            while (i < hsize) and (htmlStr[i].isalpha() or htmlStr[i].isdigit()):
+                tag.append(htmlStr[i])
+                i += 1
+            while (i < hsize) and htmlStr[i] != '>':
+                i += 1
+            if (i >= hsize):
+                return False
+            tag.append(htmlStr[i])
+            htmTag = ''.join(tag)
+            # print ("tag: ", htmTag)
+            if openTag:
+                stack.push(htmTag)
+            elif stack.is_empty():
+                return False
             else:
-                top = s.pop()
-                if not matches(top,symbol):
-                       balanced = False
-        index = index + 1
-    if balanced and s.isEmpty():
-        return True
-    else:
+                topTag = stack.pop()
+                # print("popped: ", topTag)
+                # print("htmTag: ", htmTag)
+                if topTag != htmTag:
+                    return False
+        i += 1
+    if not stack.is_empty():
         return False
+    return True
 
-def matches(open,close):
-    opens = "([{"
-    closers = ")]}"
-    return opens.index(open) == closers.index(close)
 
-print(parChecker('''
-<html>
-   <head>
-      <title>
-         Example
-      </title>
-   </head>
+def readinput():
+    print ("Enter html string: ")
+    htmlStr = input()
+    return htmlStr
 
-   <body>
-      <h1>Hello, world</h1>
-   </body>
-</html>
-'''))
+
+def main():
+    html = readinput()
+    isValid = validateHTMLTags(html)
+    print("Input HTML String Valid? ", isValid)
