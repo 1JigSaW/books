@@ -1,6 +1,6 @@
 import timeit
 
-popzero = timeit.Timer("x[10]",
+popzero = timeit.Timer("x[1000000]",
                        "from __main__ import x")
 
 x = list(range(2000000))

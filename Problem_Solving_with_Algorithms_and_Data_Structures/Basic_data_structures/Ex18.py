@@ -109,7 +109,6 @@ class UnorderedList:
         node = Node(item)
 
         if index == self.size():
-            print ("Inserting at tail")
             self.tail.next = node
             self.tail = self.tail.next
             self.size1 += 1
@@ -122,7 +121,6 @@ class UnorderedList:
             curr = curr.next
             count += 1
         if prev is None:
-            print ("Inserting at head")
             node.next = self.head
             self.head = node
         else:
