@@ -49,6 +49,26 @@ class HashTable:
                     stop = True
         return data
 
+    def __delitem__(self, key):
+        startslot = self.hashfunction(key, len(self.slots))
+
+        data = None
+        stop = False
+        found = False
+        position = startslot
+        while self.slots[position] != None and \
+                not found and not stop:
+            if self.slots[position] == key:
+                found = True
+                self.data[position] = None
+                self.slots[position] = None
+
+            else:
+                position = self.rehash(position, len(self.slots))
+                if position == startslot:
+                    stop = True
+
+
     def __getitem__(self,key):
         return self.get(key)
 
@@ -57,6 +77,14 @@ class HashTable:
 
     def __len__(self):
         return self.size 
+
+    def __contains__(self, other):
+        for i in self.data:
+            if i == other:
+                return True
+                break
+        return False
+
 
 
 
@@ -76,8 +104,12 @@ print(H[20])
 print(H[17])
 H[20] = 'duck'
 H[21] = 'du2ck'
-
 print(H[20])
 print(H.data)
 print(H[99])
 print(len(H))
+print('duck' in H)
+H.delitem(55)
+print(H.data)
+#del H[93]
+print(H.data)

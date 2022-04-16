@@ -5,8 +5,8 @@ class HashTable:
         self.data = [None] * self.size
 
     def put(self,key,data):
+        count = 10
         hashvalue = self.hashfunction(key,len(self.slots))
-
         if self.slots[hashvalue] == None:
             self.slots[hashvalue] = key
             self.data[hashvalue] = data
@@ -14,16 +14,23 @@ class HashTable:
             if self.slots[hashvalue] == key:
                 self.data[hashvalue] = data  #replace
             else:
+                self.size += self.size
                 nextslot = self.rehash(hashvalue,len(self.slots))
                 while self.slots[nextslot] != None and \
                         self.slots[nextslot] != key:
                     nextslot = self.rehash(nextslot,len(self.slots))
-
+                    if nextslot == hashvalue:
+                        return
+                    count += 1
             if self.slots[nextslot] == None:
                 self.slots[nextslot]=key
                 self.data[nextslot]=data
             else:
                 self.data[nextslot] = data #replace
+        if count / self.size > 0.75:
+            self.size += 11
+            self.slots = [None] * self.size
+            self.data = [None] * self.size
 
     def hashfunction(self,key,size):
         return key%size
@@ -49,6 +56,26 @@ class HashTable:
                     stop = True
         return data
 
+    def __delitem__(self, key):
+        startslot = self.hashfunction(key, len(self.slots))
+
+        data = None
+        stop = False
+        found = False
+        position = startslot
+        while self.slots[position] != None and \
+                not found and not stop:
+            if self.slots[position] == key:
+                found = True
+                self.data[position] = None
+                self.slots[position] = None
+
+            else:
+                position = self.rehash(position, len(self.slots))
+                if position == startslot:
+                    stop = True
+
+
     def __getitem__(self,key):
         return self.get(key)
 
@@ -57,6 +84,14 @@ class HashTable:
 
     def __len__(self):
         return self.size 
+
+    def __contains__(self, other):
+        for i in self.data:
+            if i == other:
+                return True
+                break
+        return False
+
 
 
 
@@ -76,8 +111,15 @@ print(H[20])
 print(H[17])
 H[20] = 'duck'
 H[21] = 'du2ck'
-
 print(H[20])
 print(H.data)
 print(H[99])
 print(len(H))
+print('duck' in H)
+print(H.data)
+#del H[93]
+print(H.slots)
+H[111]="chisscken"
+print(H.slots)
+H[112]="chisscken"
+print(H.slots)
