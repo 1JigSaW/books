@@ -33,7 +33,7 @@ class HashTable:
             self.data = [None] * self.size
 
     def hashfunction(self,key,size):
-        return key%size
+        return key**2%size
 
     def rehash(self,oldhash,size):
         return (oldhash+1)%size
