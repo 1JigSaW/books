@@ -2,19 +2,19 @@ from Stack import Stack
 from BinaryTree import BinaryTree
 
 def buildParseTree(fpexp):
-	fplist2 = []
+	fplist = []
 	while len(fpexp) != 0:
 		ch = fpexp[0]
 		if ch in '()+-*/':
-			fplist2.append(ch)
+			fplist.append(ch)
 			fpexp = fpexp[1:]
 		else:
 			i = 0
-			while fpexp[i] not in '()+-*/':
+			while (fpexp[i] not in '()+-*/andornot'):
 				i += 1
-			fplist2.append(fpexp[:i])
+			fplist.append(fpexp[:i])
 			fpexp = fpexp[i:]
-	print(fplist2)
+	print(fplist)
 	pStack = Stack()
 	eTree = BinaryTree('')
 	pStack.push(eTree)
@@ -41,7 +41,7 @@ def buildParseTree(fpexp):
 	return eTree
 
 def evaluate(parseTree):
-	opers = {'+':operator.add, '-':operator.sub, '*':operator.mul, '/':operator.truediv}
+	opers = {'+':operator.add, '-':operator.sub, '*':operator.mul, '/':operator.truediv, 'and':operator.and_, 'or':operator.or_, 'not':operator.not_}
 
 	leftC = parseTree.getLeftChild()
 	rightC = parseTree.getRightChild()
@@ -65,7 +65,7 @@ def postorder(tree):
 		print(tree.getRootVal())
 
 def postordereval(tree):
-	opers = {'+':operator.add, '-':operator.sub, '*':operator.mul, '/':operator.truediv}
+	opers = {'+':operator.add, '-':operator.sub, '*':operator.mul, '/':operator.truediv, 'and':operator.and_, 'or':operator.or_, 'not':operator.not_}
 	res1 = None
 	res2 = None
 	if tree:
@@ -92,4 +92,6 @@ def printexp(tree):
 
 pt = buildParseTree("((10+5)*3)")
 printexp(pt)
+ans = evaluate(buildParseTree('5and2'))
+print(ans)
 #pt.postorder()
