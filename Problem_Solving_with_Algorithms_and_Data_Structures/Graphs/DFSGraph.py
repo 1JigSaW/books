@@ -24,3 +24,4 @@ class DFSGraph(Graph):
         startVertex.setColor('black')
         self.time += 1
         startVertex.setFinish(self.time)
+
