@@ -1,4 +1,4 @@
-class Stack:
+fclass Stack:
     def __init__(self):
         self.items = []
 
