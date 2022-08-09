@@ -1,12 +1,20 @@
 class Stack:
     def __init__(self):
         self.items = []
+        self.minn = None
 
     def isEmpty(self):
         return self.items == []
 
     def push(self, item):
         self.items.append(item)
+        if len(self.items) == 0:
+            self.minn = None
+        elif len(self.items) == 1:
+            self.minn = self.items[0]
+        else:
+            if item < self.minn:
+                self.minn = item
 
     def pop(self):
         return self.items.pop()
@@ -17,15 +25,8 @@ class Stack:
     def size(self):
         return len(self.items)
 
-s = Stack()
-print(s.isEmpty())
-s.push(4)
-s.push('dog')
-print(s.peek())
-s.push(True)
-print(s.size())
-print(s.isEmpty())
-s.push(8.4)
-print(s.pop())
-print(s.pop())
-print(s.size())
+    def min(self):
+        return self.minn
+
+stack = Stack()
+print(stack.min())
